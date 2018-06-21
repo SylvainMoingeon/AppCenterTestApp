@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppCenterTestApp.Views.MainPage"
+             BindingContext="{Binding Source={x:Static Application.Current},
+                                      Path=MainPageViewModel}">
+
+    <StackLayout>
+        <!-- Place new controls here -->
+    	<Label Text="{Binding Title}" 
+           HorizontalOptions="Center"
+           VerticalOptions="Center" />
+
+        <Label>Entrez un entier : </Label>
+        <Entry AutomationId="IntegerEntry" Text="{Binding Number, Mode=TwoWay}"></Entry>
+
+        <Button Text="Plus !" Command="{Binding PlusCommand}" />
+    </StackLayout>
+
+</ContentPage>

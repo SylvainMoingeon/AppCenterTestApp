@@ -4,6 +4,8 @@ using Xamarin.Forms.Xaml;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using AppCenterTestApp.Views;
+using AppCenterTestApp.ViewModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace AppCenterTestApp
@@ -14,8 +16,12 @@ namespace AppCenterTestApp
         {
             InitializeComponent();
 
+            MainPageViewModel = new MainPageViewModel();
+
             MainPage = new MainPage();
         }
+
+        public MainPageViewModel MainPageViewModel { get; private set; }
 
         protected override void OnStart()
         {
