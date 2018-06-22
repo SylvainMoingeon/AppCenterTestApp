@@ -14,7 +14,7 @@
         <Label>Entrez un entier : </Label>
         <Entry AutomationId="IntegerEntry" Text="{Binding Number, Mode=TwoWay}"></Entry>
 
-        <Button Text="Plus !" Command="{Binding PlusCommand}" />
+        <Button AutomationId="PlusButton" Text="Plus !" Command="{Binding PlusCommand}" />
     </StackLayout>
 
 </ContentPage>
