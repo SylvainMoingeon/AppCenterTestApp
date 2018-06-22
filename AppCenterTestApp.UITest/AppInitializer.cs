@@ -10,7 +10,11 @@ namespace AppCenterTestApp.UITest
 		{
 			if (platform == Platform.Android)
 			{
-				return ConfigureApp.Android.StartApp();
+				return ConfigureApp
+                    .Android
+                    .EnableLocalScreenshots()
+                    .ApkFile(@"../../../AndroidApks/fr.sylvainmoingeon.appcentertestapp.apk")
+                    .StartApp();
 			}
 
 			return ConfigureApp.iOS.StartApp();
