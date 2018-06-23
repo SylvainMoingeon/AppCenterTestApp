@@ -9,12 +9,12 @@ namespace AppCenterTestApp.UITest
 {
     //[TestFixture(Platform.iOS)]
     [TestFixture(Platform.Android)]
-    public class Tests
+    public class MainPageTests
     {
         IApp app;
         Platform platform;
 
-        public Tests(Platform platform)
+        public MainPageTests(Platform platform)
         {
             this.platform = platform;
         }
