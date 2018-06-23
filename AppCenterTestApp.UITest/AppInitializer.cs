@@ -12,8 +12,9 @@ namespace AppCenterTestApp.UITest
 			{
 				return ConfigureApp
                     .Android
-                    .EnableLocalScreenshots()
-                    .ApkFile(@"../../../AndroidApks/fr.sylvainmoingeon.appcentertestapp.apk")
+                    //.EnableLocalScreenshots()
+                    //.InstalledApp("fr.sylvainmoingeon.appcentertestapp")
+                    //.ApkFile(@"C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk")
                     .StartApp();
 			}
 
