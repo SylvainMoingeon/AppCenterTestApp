@@ -33,12 +33,6 @@
     <PackageReference Include="NUnitTestAdapter" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppCenterTestApp\AppCenterTestApp.Android\AppCenterTestApp.Android.csproj">
-      <Project>{a8b95480-a278-408b-9595-10379ce486ec}</Project>
-      <Name>AppCenterTestApp.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tests.cs" />
     <Compile Include="AppInitializer.cs" />
   </ItemGroup>
