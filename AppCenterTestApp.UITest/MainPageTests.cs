@@ -14,6 +14,14 @@ namespace AppCenterTestApp.UITest
         IApp app;
         Platform platform;
 
+        static readonly Func<AppQuery, AppQuery> plusButton = q => q.Button("PlusButton");
+        static readonly Func<AppQuery, AppQuery> nextButton = q => q.Button("NextPageButton");
+        static readonly Func<AppQuery, AppQuery> integerEntry = q => q.Marked("IntegerEntry");
+
+        const String initialConditionCategory = "InitialCondition";
+        const String navigationCategory = "Navigation";
+        const String businessLogicCategory = "BusinessLogic";
+
         public MainPageTests(Platform platform)
         {
             this.platform = platform;
@@ -25,24 +33,87 @@ namespace AppCenterTestApp.UITest
             app = AppInitializer.StartApp(platform);
         }
 
+
+        //[Test]
+        //[Category("localUITest")]
+        //public void _RunRepl()
+        //{
+        //    app.Repl();
+        //}
+
         [Test]
-        [TestCase(1, "1")]
-        [TestCase(2, "2")]
-        [TestCase(3, "3")]
-        public void TapXTimesPlusButton_IncrementsXTimesIntegerEntry(int numberOfTaps, String entryTextResult)
+        [Category(navigationCategory)]
+        public void Navigation_NextButtonTap_ShouldNavigateToSecondPage()
         {
             // Arrange
 
             // Act
-            for (int i = 0; i < numberOfTaps; i++)
-            {
-                app.Tap(x => x.Button("PlusButton"));
-                app.Screenshot("Tap Tap Number Button");
-            }
-
+            app.Tap(nextButton);
 
             // Assert
-            var appResult = app.Query("IntegerEntry").First(result => result.Text.Equals(entryTextResult));
+            app.WaitForElement("SecondPage", "La page suivante ne peux pas être atteinte.");
         }
+
+        [Test]
+        [Category(initialConditionCategory)]
+        public void IntegerEntry_AtLaunch_ShouldDisplayZero()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            var appResult = app.Query(integerEntry).Single();
+            Assert.AreEqual("0", appResult.Text);
+        }
+
+        [Test]
+        [Category(initialConditionCategory)]
+        public void PlusButton_AtLaunch_ShouldBeEnabled()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            var appResult = app.Query(plusButton).Single();
+            Assert.IsTrue(appResult.Enabled, "Le bouton 'Plus' devrait être activé à l'ouverture de la fenêtre.");
+        }
+
+        [Test]
+        [TestCase(10, 0)]
+        [TestCase(9, 1)]
+        [TestCase(5, 5)]
+        [TestCase(9, 5)]
+        [Category(businessLogicCategory)]
+        public void PlusButton_IfEntryIntegerValueEqualOrGreaterThanTen_ShouldBeDisable(int startingValue, int numberOfTap)
+        {
+            // Arrange
+
+        }
+
+        [Test]
+        [TestCase(1, "1")]
+        [TestCase(2, "2")]
+        [TestCase(3, "3")]
+        [Category(businessLogicCategory)]
+        public void PlusButton_StartingFromZero_TapXTimes_IntegerEntryDisplaysX(int numberOfTaps, String entryTextResult)
+        {
+            // Arrange
+            app.EnterText(integerEntry, "0");
+
+            // Act
+            for (int i = 0; i < numberOfTaps; i++)
+            {
+                app.Tap(plusButton);
+                app.Screenshot("Tap PlusButton");
+            }
+
+            // Assert
+            var appResult = app.Query(integerEntry).Single();
+            Assert.AreEqual(  entryTextResult, appResult.Text);
+        }
+
+
     }
 }
