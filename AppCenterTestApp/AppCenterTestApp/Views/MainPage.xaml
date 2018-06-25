@@ -15,6 +15,7 @@
         <Entry AutomationId="IntegerEntry" Text="{Binding Number, Mode=TwoWay}"></Entry>
 
         <Button AutomationId="PlusButton" Text="Plus !" Command="{Binding PlusCommand}" />
+        <Button AutomationId="NextPageButton" Text="Page suivante" Clicked="Button_Clicked" />
     </StackLayout>
 
 </ContentPage>
