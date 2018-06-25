@@ -15,7 +15,9 @@ namespace AppCenterTestApp.ViewModels
         public int Number
         {
             get { return number; }
-            set { Set(ref number, value); }
+            set { Set(ref number, value);
+                RefreshCanExecutes();
+            }
         }
 
 
@@ -27,7 +29,6 @@ namespace AppCenterTestApp.ViewModels
                 execute: () =>
                 {
                     Number++;
-                    RefreshCanExecutes();
                 },
                 canExecute: () =>
         {
