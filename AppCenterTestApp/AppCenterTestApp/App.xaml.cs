@@ -17,11 +17,13 @@ namespace AppCenterTestApp
             InitializeComponent();
 
             MainPageViewModel = new MainPageViewModel();
+            SecondPageViewModel = new SecondPageViewModel();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         public MainPageViewModel MainPageViewModel { get; private set; }
+        public SecondPageViewModel SecondPageViewModel { get; private set; }
 
         protected override void OnStart()
         {
