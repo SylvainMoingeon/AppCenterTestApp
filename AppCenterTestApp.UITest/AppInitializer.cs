@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppCenterTestApp.UITest.UITestHelpers;
+using System;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
 
@@ -13,12 +14,16 @@ namespace AppCenterTestApp.UITest
 				return ConfigureApp
                     .Android
                     .EnableLocalScreenshots()
-                    .InstalledApp("fr.sylvainmoingeon.appcentertestapp")
                     //.ApkFile(@"C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk")
+                    .InstalledApp("fr.sylvainmoingeon.appcentertestapp")
+                    .WaitTimes(new WaitTimes())
                     .StartApp();
 			}
 
-			return ConfigureApp.iOS.StartApp();
+			return ConfigureApp
+                .iOS
+                .EnableLocalScreenshots()                
+                .StartApp();
 		}
 	}
 }
