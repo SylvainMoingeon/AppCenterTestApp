@@ -7,7 +7,7 @@ using Xamarin.UITest.Queries;
 
 namespace AppCenterTestApp.UITest
 {
-    //[TestFixture(Platform.iOS)]
+    [TestFixture(Platform.iOS)]
     [TestFixture(Platform.Android)]
     public class MainPageTests
     {
@@ -52,6 +52,7 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             app.WaitForElement("SecondPage", "La page suivante ne peux pas être atteinte.");
+            app.Screenshot("Navigate to second page");
         }
 
         [Test]
@@ -65,6 +66,7 @@ namespace AppCenterTestApp.UITest
             // Assert
             var appResult = app.Query(integerEntry).Single();
             Assert.AreEqual("0", appResult.Text);
+            app.Screenshot("Value is zero at launch");
         }
 
         [Test]
@@ -78,17 +80,30 @@ namespace AppCenterTestApp.UITest
             // Assert
             var appResult = app.Query(plusButton).Single();
             Assert.IsTrue(appResult.Enabled, "Le bouton 'Plus' devrait être activé à l'ouverture de la fenêtre.");
+            app.Screenshot("PlusButton enabled at launch");
         }
 
         [Test]
-        [TestCase(10, 0)]
-        [TestCase(9, 1)]
-        [TestCase(5, 5)]
-        [TestCase(9, 5)]
+        [TestCase("10", 0)]
+        [TestCase("9", 1)]
+        [TestCase("5", 5)]
+        [TestCase("9", 5)]
         [Category(businessLogicCategory)]
-        public void PlusButton_IfEntryIntegerValueEqualOrGreaterThanTen_ShouldBeDisable(int startingValue, int numberOfTap)
+        public void PlusButton_IfEntryIntegerValueEqualOrGreaterThanTen_ShouldBeDisable(string startingValue, int numberOfTap)
         {
             // Arrange
+            app.EnterText(integerEntry, startingValue);
+
+            // Act
+            for (int i = 0; i < numberOfTap; i++)
+            {
+                app.Tap(plusButton);
+            }
+
+            // Assert
+            var appResult = app.Query(plusButton).Single();
+            Assert.IsTrue(!appResult.Enabled, "Le bouton plus devrait être désactivé si la valeur est supérieure ou égale à 10");
+            app.Screenshot("PlusButton disabled at 10");
 
         }
 
@@ -112,6 +127,7 @@ namespace AppCenterTestApp.UITest
             // Assert
             var appResult = app.Query(integerEntry).Single();
             Assert.AreEqual(  entryTextResult, appResult.Text);
+            app.Screenshot($"Le champs de saisie affiche {entryTextResult}");
         }
 
 
