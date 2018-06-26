@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="MainPageTests.cs" />
     <Compile Include="AppInitializer.cs" />
+    <Compile Include="UITestHelpers\WaitTime.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
