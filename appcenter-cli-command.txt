@@ -1,0 +1,35 @@
+appcenter test run uitest --app "smoingeon/AppCenterTestApp" --devices 1b29d6dd --app-path pathToFile.apk --test-series "master" --locale "fr_FR" --build-dir pathToUITestBuildDir
+
+############
+# EN LOCAL #
+############
+
+appcenter test run uitest --app "smoingeon/AppCenterTestApp" --devices "smoingeon/one-oreo-device" --app-path "C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk" --test-series "master" --locale "fr_FR" --build-dir "D:\Pro\Git\AppCenterTestApp\AppCenterTestApp.UITest\bin\Release"  --uitest-tools-dir "C:\Users\Sylvain\.nuget\packages\xamarin.uitest\2.2.4\tools\"
+
+
+
+Le path du keystore
+C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Keystore\smodev\smodev.keystore
+
+Le path de l'apk
+C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk
+
+Le path vers test-cloud.exe
+"C:\Users\Sylvain\AppData "C:\Users\Sylvain\.nuget\packages\xamarin.uitest\2.2.4\tools\"
+
+/!\ Les packages nuget n'étant pas dans le dossier du projet, il est nécessire d'utiliser le paramètre --uitest-tools-dir avec le chemin vers test-cloud.exe
+
+##################
+# SUR APP CENTER #
+##################
+
+Pour exécuter la commande automatiquement après chaque build :
+https://blogs.msdn.microsoft.com/dasanagu/2018/03/19/automateduitestsappcenter/
+
+Le path du package nuget UITest
+/Users/vsts/.nuget/packages/xamarin.uitest/2.2.4/lib
+
+Le post build script sur appcenter :
+msbuild $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/AppCenterTestApp.UITest.csproj /p:Configuration=Release
+dirname=$(ls -dt /Users/vsts/.nuget/packages/xamarin.uitest/*/lib/tools/ | head -1)
+appcenter test run uitest --app $APP --devices $DEVICES --app-path $APPCENTER_OUTPUT_DIRECTORY/fr.sylvainmoingeon.appcentertestapp.apk  --test-series "master" --locale "fr_FR" --build-dir $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/bin/Release --uitest-tools-dir $dirname --async --token $TOKEN
