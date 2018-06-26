@@ -29,7 +29,8 @@ namespace AppCenterTestApp
         {
             // Handle when your app starts
             AppCenter.Start("android=7d096ecd-e96c-4236-bf94-a07de36fd26f;" +
-                            "uwp=28a878a9-5765-4242-8b85-d083e8d58299;", typeof(Analytics), typeof(Crashes));
+                            "uwp=28a878a9-5765-4242-8b85-d083e8d58299;" +
+                            "ios=1bd011eb-6e2b-4588-9ac4-aceabda4a786;", typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()
