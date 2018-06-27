@@ -14,9 +14,15 @@ namespace AppCenterTestApp.Views
 			InitializeComponent();
 		}
 
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
+        private async void NextPageButton_Clicked(object sender, EventArgs e)
+        {           
             await Navigation.PushAsync(new SecondPage(), true);
+        }
+
+        private async void LoginPageButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LoginPage(), true);
+
         }
     }
 }

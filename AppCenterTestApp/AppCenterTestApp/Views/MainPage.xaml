@@ -7,15 +7,17 @@
 
     <StackLayout>
         <!-- Place new controls here -->
-    	<Label Text="{Binding Title}" 
+        <Label Text="{Binding Title}" 
            HorizontalOptions="Center"
            VerticalOptions="Center" />
 
-        <Label>Entrez un entier : </Label>
+        <Label>Entrez un entier :</Label>
         <Entry AutomationId="IntegerEntry" Text="{Binding Number, Mode=TwoWay}"></Entry>
 
         <Button AutomationId="PlusButton" Text="Plus !" Command="{Binding PlusCommand}" />
-        <Button AutomationId="NextPageButton" Text="Page suivante" Clicked="Button_Clicked" />
+        <Button AutomationId="NextPageButton" Text="Page suivante" Clicked="NextPageButton_Clicked" />
+        <Button AutomationId="LoginPageButton" Text="Page de connexion" Clicked="LoginPageButton_Clicked" />
+
     </StackLayout>
 
 </ContentPage>
