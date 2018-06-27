@@ -4,8 +4,12 @@ appcenter test run uitest --app "smoingeon/AppCenterTestApp" --devices 1b29d6dd 
 # EN LOCAL #
 ############
 
+** ANDROID **
 appcenter test run uitest --app "smoingeon/AppCenterTestApp" --devices "smoingeon/one-oreo-device" --app-path "C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk" --test-series "master" --locale "fr_FR" --build-dir "D:\Pro\Git\AppCenterTestApp\AppCenterTestApp.UITest\bin\Release"  --uitest-tools-dir "C:\Users\Sylvain\.nuget\packages\xamarin.uitest\2.2.4\tools\"
 
+
+** iOS **
+appcenter test run uitest --app "smoingeon/AppCenterTestAppiOS" --devices smoingeon/iphonese --app-path pathToFile.ipa --test-series "master" --locale "fr_FR" --build-dir pathToUITestBuildDir
 
 
 Le path du keystore
@@ -30,6 +34,13 @@ Le path du package nuget UITest
 /Users/vsts/.nuget/packages/xamarin.uitest/2.2.4/lib
 
 Le post build script sur appcenter :
+
+** ANDROID **
+msbuild $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/AppCenterTestApp.UITest.csproj /p:Configuration=Release
+dirname=$(ls -dt /Users/vsts/.nuget/packages/xamarin.uitest/*/lib/tools/ | head -1)
+appcenter test run uitest --app $APP --devices $DEVICES --app-path $APPCENTER_OUTPUT_DIRECTORY/fr.sylvainmoingeon.appcentertestapp.apk  --test-series "master" --locale "fr_FR" --build-dir $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/bin/Release --uitest-tools-dir $dirname --async --token $TOKEN
+
+** iOS **
 msbuild $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/AppCenterTestApp.UITest.csproj /p:Configuration=Release
 dirname=$(ls -dt /Users/vsts/.nuget/packages/xamarin.uitest/*/lib/tools/ | head -1)
 appcenter test run uitest --app $APP --devices $DEVICES --app-path $APPCENTER_OUTPUT_DIRECTORY/fr.sylvainmoingeon.appcentertestapp.apk  --test-series "master" --locale "fr_FR" --build-dir $APPCENTER_SOURCE_DIRECTORY/AppCenterTestApp.UITest/bin/Release --uitest-tools-dir $dirname --async --token $TOKEN
