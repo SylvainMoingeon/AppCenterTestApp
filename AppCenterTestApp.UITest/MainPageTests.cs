@@ -7,7 +7,7 @@ using Xamarin.UITest.Queries;
 
 namespace AppCenterTestApp.UITest
 {
-    [TestFixture(Platform.iOS)]
+    //[TestFixture(Platform.iOS)]
     [TestFixture(Platform.Android)]
     public class MainPageTests
     {
@@ -65,8 +65,8 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             var appResult = app.Query(integerEntry).Single();
-            Assert.AreEqual("0", appResult.Text);
             app.Screenshot("Value is zero at launch");
+            Assert.AreEqual("0", appResult.Text);
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             var appResult = app.Query(plusButton).Single();
-            Assert.IsTrue(appResult.Enabled, "Le bouton 'Plus' devrait être activé à l'ouverture de la fenêtre.");
             app.Screenshot("PlusButton enabled at launch");
+            Assert.IsTrue(appResult.Enabled, "Le bouton 'Plus' devrait être activé à l'ouverture de la fenêtre.");
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             var appResult = app.Query(plusButton).Single();
-            Assert.IsTrue(!appResult.Enabled, "Le bouton plus devrait être désactivé si la valeur est supérieure ou égale à 10");
             app.Screenshot("PlusButton disabled at 10");
+            Assert.IsTrue(!appResult.Enabled, "Le bouton plus devrait être désactivé si la valeur est supérieure ou égale à 10");
 
         }
 
@@ -126,8 +126,8 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             var appResult = app.Query(integerEntry).Single();
-            Assert.AreEqual(  entryTextResult, appResult.Text);
             app.Screenshot($"Le champs de saisie affiche {entryTextResult}");
+            Assert.AreEqual(entryTextResult, appResult.Text);
         }
 
 
