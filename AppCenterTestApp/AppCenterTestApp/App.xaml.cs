@@ -18,12 +18,14 @@ namespace AppCenterTestApp
 
             MainPageViewModel = new MainPageViewModel();
             SecondPageViewModel = new SecondPageViewModel();
+            LoginPageViewModel = new LoginPageViewModel();
 
             MainPage = new NavigationPage(new MainPage());
         }
 
         public MainPageViewModel MainPageViewModel { get; private set; }
         public SecondPageViewModel SecondPageViewModel { get; private set; }
+        public LoginPageViewModel LoginPageViewModel { get; private set; }
 
         protected override void OnStart()
         {
