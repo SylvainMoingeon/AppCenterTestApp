@@ -19,6 +19,7 @@ namespace AppCenterTestApp.ViewModels
             {
                 Set(ref userId, value);
                 RefreshCanExecutes();
+                BadCredentials = false;
             }
         }
 
@@ -31,6 +32,7 @@ namespace AppCenterTestApp.ViewModels
             {
                 Set(ref userPassword, value);
                 RefreshCanExecutes();
+                BadCredentials = false;
             }
         }
 
@@ -46,6 +48,15 @@ namespace AppCenterTestApp.ViewModels
             }
         }
 
+        private bool badCredentials;
+
+        public bool BadCredentials
+        {
+            get { return badCredentials; }
+            set { Set(ref badCredentials, value); }
+        }
+
+
 
         public LoginPageViewModel()
         {
@@ -54,13 +65,17 @@ namespace AppCenterTestApp.ViewModels
 
         private void Login(object obj)
         {
-            if (UserId == "Toto" && UserPassword == "Zér0")
+            if (UserId == "admin" && UserPassword == "admin")
             {
+                BadCredentials = false;
                 IsLogged = true;
+
+                MessagingCenter.Send(this, MessengerKeys.LoginSuccess);
             }
             else
             {
                 IsLogged = false;
+                BadCredentials = true;
             }
 
         }

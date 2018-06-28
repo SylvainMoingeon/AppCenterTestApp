@@ -2,15 +2,32 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppCenterTestApp.Views.LoginPage"
+             AutomationId="LoginPage"
              BindingContext="{Binding Source={x:Static Application.Current},
                                       Path=LoginPageViewModel}">
     <ContentPage.Content>
         <StackLayout Padding="20">
             <Label>Identifiant</Label>
-            <Entry AutomationId="LoginId" Text="{Binding UserId}"></Entry>
+            <Entry AutomationId="UserIdEntry" Text="{Binding UserId}"></Entry>
             <Label>Mot de passe</Label>
-            <Entry AutomationId="LoginPassword" Text="{Binding UserPassword}" IsPassword="True"  ></Entry>
+            <Entry AutomationId="UserPasswordEntry" Text="{Binding UserPassword}" IsPassword="True"  ></Entry>
 
+            <Label FontSize="Small">(admin/admin)</Label>
+
+            <Label AutomationId="ErrorMessageLabel" FontAttributes="Bold" TextColor="Red">
+                Identifiants incorrects
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding BadCredentials}" Value="false">
+                        <Setter Property="IsVisible" Value="false" />
+
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding BadCredentials}" Value="true">
+                        <Setter Property="IsVisible" Value="True" />
+
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+                   
             <Button AutomationId="LoginButton" Command="{Binding LoginCommand}" Text="SE CONNECTER"></Button>
         </StackLayout>
     </ContentPage.Content>
