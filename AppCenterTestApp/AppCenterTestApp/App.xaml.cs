@@ -20,7 +20,7 @@ namespace AppCenterTestApp
             SecondPageViewModel = new SecondPageViewModel();
             LoginPageViewModel = new LoginPageViewModel();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new LoginPage();
         }
 
         public MainPageViewModel MainPageViewModel { get; private set; }
