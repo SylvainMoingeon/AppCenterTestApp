@@ -14,13 +14,20 @@ namespace AppCenterTestApp.UITest
         IApp app;
         Platform platform;
 
+        // MainPage
         static readonly Func<AppQuery, AppQuery> plusButton = q => q.Button("PlusButton");
         static readonly Func<AppQuery, AppQuery> nextButton = q => q.Button("NextPageButton");
         static readonly Func<AppQuery, AppQuery> integerEntry = q => q.Marked("IntegerEntry");
 
-        const String initialConditionCategory = "InitialCondition";
-        const String navigationCategory = "Navigation";
-        const String businessLogicCategory = "BusinessLogic";
+        // Login Page
+        static readonly Func<AppQuery, AppQuery> LoginPage = q => q.Marked("LoginPage");
+        static readonly Func<AppQuery, AppQuery> loginButton = q => q.Button("LoginButton");
+        static readonly Func<AppQuery, AppQuery> UserIdEntry = q => q.Marked("UserIdEntry");
+        static readonly Func<AppQuery, AppQuery> UserPasswordEntry = q => q.Marked("UserPasswordEntry");
+
+        const String category_initialConditionCategory = "InitialCondition";
+        const String category_navigationCategory = "Navigation";
+        const String category_businessLogicCategory = "BusinessLogic";
 
         public MainPageTests(Platform platform)
         {
@@ -41,11 +48,26 @@ namespace AppCenterTestApp.UITest
         //    app.Repl();
         //}
 
+        private void Login()
+        {
+            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
+            app.EnterText(UserIdEntry, "admin");
+            app.EnterText(UserPasswordEntry, "admin");
+
+            app.Screenshot("Login button should be enabled");
+            app.Tap(loginButton);
+
+            app.WaitForElement("MainPage", "Navigation from login page to mainpage didn't work.");
+            app.Screenshot("Navigate to main page");
+        }
+
+        #region Navigation
         [Test]
-        [Category(navigationCategory)]
+        [Category(category_navigationCategory)]
         public void Navigation_NextButtonTap_ShouldNavigateToSecondPage()
         {
             // Arrange
+            Login();
 
             // Act
             app.Tap(nextButton);
@@ -54,12 +76,15 @@ namespace AppCenterTestApp.UITest
             app.WaitForElement("SecondPage", "La page suivante ne peux pas être atteinte.");
             app.Screenshot("Navigate to second page");
         }
+        #endregion
+
 
         [Test]
-        [Category(initialConditionCategory)]
-        public void IntegerEntry_AtLaunch_ShouldDisplayZero()
+        [Category(category_initialConditionCategory)]
+        public void AtLaunch_IntegerEntryShouldDisplayZero()
         {
             // Arrange
+            Login();
 
             // Act
 
@@ -70,10 +95,11 @@ namespace AppCenterTestApp.UITest
         }
 
         [Test]
-        [Category(initialConditionCategory)]
-        public void PlusButton_AtLaunch_ShouldBeEnabled()
+        [Category(category_initialConditionCategory)]
+        public void AtLaunch_PlusButtonShouldBeEnabled()
         {
             // Arrange
+            Login();
 
             // Act
 
@@ -88,10 +114,12 @@ namespace AppCenterTestApp.UITest
         [TestCase("9", 1)]
         [TestCase("5", 5)]
         [TestCase("9", 5)]
-        [Category(businessLogicCategory)]
-        public void PlusButton_IfEntryIntegerValueEqualOrGreaterThanTen_ShouldBeDisable(string startingValue, int numberOfTap)
+        [Category(category_businessLogicCategory)]
+        public void IfEntryIntegerValueEqualOrGreaterThanTen_PlusButtonShouldBeDisable(string startingValue, int numberOfTap)
         {
             // Arrange
+            Login();
+
             app.EnterText(integerEntry, startingValue);
 
             // Act
@@ -111,11 +139,11 @@ namespace AppCenterTestApp.UITest
         [TestCase(1, "1")]
         [TestCase(2, "2")]
         [TestCase(3, "3")]
-        [Category(businessLogicCategory)]
-        public void PlusButton_StartingFromZero_TapXTimes_IntegerEntryDisplaysX(int numberOfTaps, String entryTextResult)
+        [Category(category_businessLogicCategory)]
+        public void StartingFromZero_TapPlusButtonXTimes_IntegerEntryDisplaysX(int numberOfTaps, String entryTextResult)
         {
             // Arrange
-            app.EnterText(integerEntry, "0");
+            Login();
 
             // Act
             for (int i = 0; i < numberOfTaps; i++)
@@ -126,6 +154,7 @@ namespace AppCenterTestApp.UITest
 
             // Assert
             var appResult = app.Query(integerEntry).Single();
+
             app.Screenshot($"Le champs de saisie affiche {entryTextResult}");
             Assert.AreEqual(entryTextResult, appResult.Text);
         }
