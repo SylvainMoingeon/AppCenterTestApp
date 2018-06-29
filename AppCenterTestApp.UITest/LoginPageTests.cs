@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using AppCenterTestApp.UITest.Pages;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
@@ -13,16 +14,6 @@ namespace AppCenterTestApp.UITest
     {
         IApp app;
         Platform platform;
-
-        // Login Page
-        static readonly Func<AppQuery, AppQuery> LoginPage = q => q.Marked("LoginPage");
-        static readonly Func<AppQuery, AppQuery> loginButton = q => q.Button("LoginButton");
-        static readonly Func<AppQuery, AppQuery> UserIdEntry = q => q.Marked("UserIdEntry");
-        static readonly Func<AppQuery, AppQuery> UserPasswordEntry = q => q.Marked("UserPasswordEntry");
-        static readonly Func<AppQuery, AppQuery> ErrorMessageLabel = q => q.Marked("ErrorMessageLabel");
-
-        // Main Page
-        static readonly Func<AppQuery, AppQuery> MainPage = q => q.Marked("MainPage");
 
 
         const String category_initialCondition = "InitialCondition";
@@ -54,13 +45,12 @@ namespace AppCenterTestApp.UITest
         public void AtLAunch_LoginPageShouldLoad()
         {
             // Arrange
+            var loginPage = new LoginPage(app);
 
             // Act
-            app.Screenshot("At Launch");
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas au démarrage");
-            app.Screenshot("At Launch should display Login page");
 
             // Assert
+            Assert.IsTrue(loginPage.CheckForPage(), "Login page is not displayed at launch");
 
         }
 
@@ -69,14 +59,12 @@ namespace AppCenterTestApp.UITest
         public void AtLaunch_LoginButtonShouldBeDisabled()
         {
             // Arrange
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas au démarrage");
-            app.Screenshot("Login page is displayed");
+            var loginPage = new LoginPage(app);
 
             // Act
 
             // Assert
-            var loginButtonResult = app.Query(loginButton).Single();
-            Assert.IsTrue(!loginButtonResult.Enabled, "At launch login button should be disabled");
+            Assert.IsTrue(!loginPage.IsLoginButtonEnabled(), "At launch login button should be disabled");
 
         }
         #endregion
@@ -87,18 +75,15 @@ namespace AppCenterTestApp.UITest
         public void Validation_BadCredentials_ShouldDisplayErrorMessage()
         {
             // Arrange
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
-
-            app.EnterText(UserIdEntry, "admin");
-            app.EnterText(UserPasswordEntry, "baspassword");
+            var loginPage = new LoginPage(app);
 
             // Act
-            app.Screenshot("Login button should be enabled");
-            app.Tap(loginButton);
+            loginPage.Login("admin", "badpassword");
+
 
             // Assert
-            app.WaitForElement(ErrorMessageLabel, "Error message isn't displayed.");
-            app.Screenshot("Bad credentials display error message");
+            Assert.IsTrue(loginPage.CheckForErrorMessage(), "Error message isn't displayed.");
+
         }
 
         [Test]
@@ -106,17 +91,15 @@ namespace AppCenterTestApp.UITest
         public void Validation_IfUserIdIsEmpty_LoginButtonShouldBeDisable()
         {
             // Arrange
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
+            var loginPage = new LoginPage(app);
+
 
             // Act
-            app.ClearText(UserIdEntry);
-            app.EnterText(UserPasswordEntry, "somepassword");
-            app.Screenshot("UserId is empty");
+            loginPage.ClearUserName();
+            loginPage.FillPassword("password");
 
             // Assert
-            var loginButtonResult = app.Query(loginButton).Single();
-            Assert.IsTrue(!loginButtonResult.Enabled, "If UserId is empty login button should be disabled");
-            app.Screenshot("UserId is empty and login button is disabled");
+            Assert.IsFalse(loginPage.IsLoginButtonEnabled(), "If Username is empty login button should be disabled");
         }
 
         [Test]
@@ -124,17 +107,15 @@ namespace AppCenterTestApp.UITest
         public void Validation_IfUserPasswordIsEmpty_LoginButtonShouldBeDisable()
         {
             // Arrange
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
+            var loginPage = new LoginPage(app);
+
 
             // Act
-            app.ClearText(UserPasswordEntry );
-            app.EnterText(UserIdEntry, "admin");
-            app.Screenshot("UserPassword is empty");
+            loginPage.FillUserName("admin");
+            loginPage.ClearPassword();
 
             // Assert
-            var loginButtonResult = app.Query(loginButton).Single();
-            Assert.IsTrue(!loginButtonResult.Enabled, "If UserPassword is empty login button should be disabled");
-            app.Screenshot("UserPassword is empty and login button is disabled");
+            Assert.IsFalse(loginPage.IsLoginButtonEnabled(), "If password is empty login button should be disabled");
         }
         #endregion
 
@@ -144,18 +125,14 @@ namespace AppCenterTestApp.UITest
         public void Navigation_AtLoginSuccess_ShouldNavigateToMainPage()
         {
             // Arrange
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
-            app.EnterText(UserIdEntry, "admin");
-            app.EnterText(UserPasswordEntry, "admin");
-
+            var loginPage = new LoginPage(app);
 
             // Act
-            app.Screenshot("Login button should be enabled");
-            app.Tap(loginButton);
+            var mainPage = loginPage.Login("admin", "admin");
 
             // Assert
-            app.WaitForElement("MainPage", "Navigation from login page to mainpage didn't work.");
-            app.Screenshot("Navigate to main page");
+            Assert.IsTrue( mainPage.CheckForPage(),"The main page should display");
+
         }
         #endregion
 

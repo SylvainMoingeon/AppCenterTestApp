@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.UITest.Utils;
 
-namespace AppCenterTestApp.UITest.UITestHelpers
+namespace AppCenterTestApp.UITest.Helpers
 {
     public class WaitTimes : IWaitTimes
     {

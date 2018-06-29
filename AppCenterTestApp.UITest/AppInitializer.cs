@@ -1,4 +1,4 @@
-﻿using AppCenterTestApp.UITest.UITestHelpers;
+﻿using AppCenterTestApp.UITest.Helpers;
 using System;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;

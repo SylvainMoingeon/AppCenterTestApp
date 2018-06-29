@@ -33,10 +33,15 @@
     <PackageReference Include="NUnitTestAdapter" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\AppExtensions.cs" />
     <Compile Include="LoginPageTests.cs" />
     <Compile Include="MainPageTests.cs" />
     <Compile Include="AppInitializer.cs" />
-    <Compile Include="UITestHelpers\WaitTime.cs" />
+    <Compile Include="Helpers\BasePage.cs" />
+    <Compile Include="Pages\LoginPage.cs" />
+    <Compile Include="Pages\MainPage.cs" />
+    <Compile Include="Helpers\Query.cs" />
+    <Compile Include="Helpers\WaitTime.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
