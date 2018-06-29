@@ -10,27 +10,27 @@ namespace AppCenterTestApp.ViewModels
     {
         public ICommand LoginCommand { private set; get; }
 
-        private String userId;
+        private String userName;
 
-        public String UserId
+        public String UserName
         {
-            get { return userId; }
+            get { return userName; }
             set
             {
-                Set(ref userId, value);
+                Set(ref userName, value);
                 RefreshCanExecutes();
                 BadCredentials = false;
             }
         }
 
-        private String userPassword;
+        private String password;
 
-        public String UserPassword
+        public String Password
         {
-            get { return userPassword; }
+            get { return password; }
             set
             {
-                Set(ref userPassword, value);
+                Set(ref password, value);
                 RefreshCanExecutes();
                 BadCredentials = false;
             }
@@ -65,7 +65,7 @@ namespace AppCenterTestApp.ViewModels
 
         private void Login(object obj)
         {
-            if (UserId == "admin" && UserPassword == "admin")
+            if (UserName == "admin" && Password == "admin")
             {
                 BadCredentials = false;
                 IsLogged = true;
@@ -82,7 +82,7 @@ namespace AppCenterTestApp.ViewModels
 
         private bool LoginCanExecute(object arg)
         {
-            return !String.IsNullOrWhiteSpace(UserId) && !String.IsNullOrWhiteSpace(UserPassword) && !isLogged;
+            return !String.IsNullOrWhiteSpace(UserName) && !String.IsNullOrWhiteSpace(Password) && !isLogged;
         }
 
         void RefreshCanExecutes()

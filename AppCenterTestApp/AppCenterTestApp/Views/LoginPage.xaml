@@ -8,9 +8,9 @@
     <ContentPage.Content>
         <StackLayout Padding="20">
             <Label>Identifiant</Label>
-            <Entry AutomationId="UserIdEntry" Text="{Binding UserId}"></Entry>
+            <Entry AutomationId="UserNameEntry" Text="{Binding UserName}"></Entry>
             <Label>Mot de passe</Label>
-            <Entry AutomationId="UserPasswordEntry" Text="{Binding UserPassword}" IsPassword="True"  ></Entry>
+            <Entry AutomationId="PasswordEntry" Text="{Binding Password}" IsPassword="True"  ></Entry>
 
             <Label FontSize="Small">(admin/admin)</Label>
 
