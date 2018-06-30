@@ -50,7 +50,7 @@ namespace AppCenterTestApp.UITest
             // Act
 
             // Assert
-            Assert.IsTrue(loginPage.CheckForPage(), "Login page is not displayed at launch");
+            Assert.IsTrue(loginPage.IsPageDisplayed, "Login page is not displayed at launch");
 
         }
 
@@ -64,7 +64,7 @@ namespace AppCenterTestApp.UITest
             // Act
 
             // Assert
-            Assert.IsTrue(!loginPage.IsLoginButtonEnabled(), "At launch login button should be disabled");
+            Assert.IsFalse(loginPage.LoginButtonEnabled, "At launch login button should be disabled");
 
         }
         #endregion
@@ -82,7 +82,7 @@ namespace AppCenterTestApp.UITest
 
 
             // Assert
-            Assert.IsTrue(loginPage.CheckForErrorMessage(), "Error message isn't displayed.");
+            Assert.IsTrue(loginPage.ErrorMessageDisplayed, "Error message isn't displayed.");
 
         }
 
@@ -99,7 +99,7 @@ namespace AppCenterTestApp.UITest
             loginPage.FillPassword("password");
 
             // Assert
-            Assert.IsFalse(loginPage.IsLoginButtonEnabled(), "If Username is empty login button should be disabled");
+            Assert.IsFalse(loginPage.LoginButtonEnabled, "If Username is empty login button should be disabled");
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace AppCenterTestApp.UITest
             loginPage.ClearPassword();
 
             // Assert
-            Assert.IsFalse(loginPage.IsLoginButtonEnabled(), "If password is empty login button should be disabled");
+            Assert.IsFalse(loginPage.LoginButtonEnabled, "If password is empty login button should be disabled");
         }
         #endregion
 
@@ -131,7 +131,7 @@ namespace AppCenterTestApp.UITest
             var mainPage = loginPage.Login("admin", "admin");
 
             // Assert
-            Assert.IsTrue( mainPage.CheckForPage(),"The main page should display");
+            Assert.IsTrue(mainPage.IsPageDisplayed, "The main page should display");
 
         }
         #endregion

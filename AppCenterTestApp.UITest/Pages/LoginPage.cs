@@ -19,60 +19,51 @@ namespace AppCenterTestApp.UITest.Pages
         const string PasswordEntryAutomationId = "PasswordEntry";
         const string ErrorMessageLabelAutomationId = "ErrorMessageLabel";
 
-        //static readonly Query loginPageQuery = new Query("LoginPage");
-        //static readonly Query loginButtonQuery = new Query("LoginButton");
-        //static readonly Query userIdEntryQuery = new Query("UserIdEntry");
-        //static readonly Query userPasswordEntryQuery = new Query("UserPasswordEntry");
-        //static readonly Query errorMessageLabelQuery = new Query("ErrorMessageLabel");
-
-
-
         public LoginPage(IApp app) : base(app, LoginPageName, LoginPageAutomationId)
         {
         }
 
-        //
+        public string UserNameText => _app.Query(UserNameEntryAutomationId).Single().Text;
+        public string PassWordText => _app.Query(PasswordEntryAutomationId).Single().Text;
+
+        public bool ErrorMessageDisplayed => _app.CheckForElement(ErrorMessageLabelAutomationId);
+        public bool LoginButtonDisplayed => _app.CheckForElement(LoginButtonAutomationId);
+
+        public bool LoginButtonEnabled => _app.IsElementEnabled(LoginButtonAutomationId);
+        
+        
         public void FillUserName(string username)
         {
-            _app.WaitForElement(UserNameEntryAutomationId);
-            _app.Screenshot("Youhou");
             _app.EnterText(UserNameEntryAutomationId, username);
-            _app.Screenshot("Username is filled");
+            _app.Screenshot("Filled Username");
         }
 
         public void FillPassword(string password)
         {
             _app.EnterText(PasswordEntryAutomationId, password);
-            _app.Screenshot("Password is filled");
+            _app.Screenshot("Filled Password");
 
         }
 
         public void ClearUserName()
         {
             _app.ClearText(UserNameEntryAutomationId);
-            _app.Screenshot("Username is cleared");
+            _app.Screenshot("Cleared Username");
         }
 
         public void ClearPassword()
         {
             _app.ClearText(PasswordEntryAutomationId);
-            _app.Screenshot("Passwordis cleaned");
+            _app.Screenshot("Cleared Password");
         }
 
 
         public void TapLoginButton()
         {
             _app.WaitAndTap(LoginButtonAutomationId);
-            _app.Screenshot("Login Button is tapped");
+            _app.Screenshot("Tapped Login Button");
         }
-
-        public bool IsLoginButtonEnabled()
-        {
-            _app.WaitForElement(LoginButtonAutomationId, "Login button is not displayed");
-            var button = _app.Query(LoginButtonAutomationId).Single();
-
-            return button.Enabled;
-        }
+            
 
         public MainPage Login(string username, string password)
         {
@@ -83,21 +74,7 @@ namespace AppCenterTestApp.UITest.Pages
             return new MainPage(_app);
         }
 
-        public bool CheckForErrorMessage()
-        {
-            _app.WaitForElement(ErrorMessageLabelAutomationId, "Error message is not displayed", new TimeSpan(0, 0, 1));
-            _app.Screenshot("Error message is displayed");
-
-            return true;
-        }
-
-        public bool CheckForNoErrorMessage()
-        {
-            _app.WaitForNoElement(ErrorMessageLabelAutomationId, "Error message still displayed", new TimeSpan(0, 0, 1));
-            _app.Screenshot("Error message is hidden");
-
-            return true;
-        }
+      
 
     }
 }
