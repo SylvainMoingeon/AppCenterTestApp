@@ -16,6 +16,8 @@ namespace AppCenterTestApp.UITest.Helpers
         public string PageName { get; protected set; }
         public string PageAutomationId { get; protected set; }
 
+        public bool IsPageDisplayed => _app.CheckForElement(PageAutomationId);
+
         /// <summary>
         /// 
         /// </summary>
@@ -28,23 +30,5 @@ namespace AppCenterTestApp.UITest.Helpers
             PageName = pageName;
             PageAutomationId = pageAutomationId;
         }
-
-        /// <summary>
-        /// Check if page is displayed on screen. 
-        /// </summary>
-        public bool CheckForPage()
-        {
-            try
-            {
-                _app.WaitForElement(PageAutomationId);
-                _app.Screenshot($"Page {PageName} is displayed");
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
+   }
 }
