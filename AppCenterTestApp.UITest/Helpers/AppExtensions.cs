@@ -84,5 +84,21 @@ namespace AppCenterTestApp.UITest.Helpers
         {
             Tap(app, new Query(automationId));
         }
+
+        public static bool CheckForElement(this IApp app, String automationId)
+        {
+            return app.Query(automationId).Any();
+        }
+
+        public static bool IsElementEnabled(this IApp app, String automationId)
+        {
+            if (app.CheckForElement(automationId))
+            {
+                return app.Query(automationId).First().Enabled;
+            }
+
+            throw new ArgumentNullException(automationId, $"Element marked with {automationId} si not displayed !");
+        }
     }
 }
+
