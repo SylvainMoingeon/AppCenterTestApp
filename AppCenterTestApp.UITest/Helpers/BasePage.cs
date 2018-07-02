@@ -8,7 +8,7 @@ using Xamarin.UITest;
 namespace AppCenterTestApp.UITest.Helpers
 {
     /// <summary>
-    /// Base page for pages for Page Model Pattern UITest
+    /// Base page for pages for Page Object Model Pattern UITest
     /// </summary>
     public abstract class BasePage
     {

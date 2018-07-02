@@ -7,6 +7,9 @@ using Xamarin.UITest.Utils;
 
 namespace AppCenterTestApp.UITest.Helpers
 {
+    /// <summary>
+    /// Helper class to configure globals WaitTimes
+    /// </summary>
     public class WaitTimes : IWaitTimes
     {
         public TimeSpan GestureWaitTimeout

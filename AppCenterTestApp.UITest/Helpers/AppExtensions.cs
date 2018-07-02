@@ -8,6 +8,9 @@ using Xamarin.UITest.Queries;
 
 namespace AppCenterTestApp.UITest.Helpers
 {
+    /// <summary>
+    /// Extension class for UITest.IApp class. Add some helpers to IApp.
+    /// </summary>
     public static class AppExtensions
     {
 
@@ -85,11 +88,24 @@ namespace AppCenterTestApp.UITest.Helpers
             Tap(app, new Query(automationId));
         }
 
+        /// <summary>
+        /// Check if an element is displayed on page
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="automationId">AutomationId of the element to check</param>
+        /// <returns>True if element is displayed on page</returns>
         public static bool CheckForElement(this IApp app, String automationId)
         {
             return app.Query(automationId).Any();
         }
 
+        /// <summary>
+        /// Check if an element is enabled on page
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="automationId">AutomationId of the element to check</param>
+        /// <returns>True if element is enabled</returns>
+        /// <exception cref="ArgumentNullException">Throw exception if element is not displayed on page.</exception>
         public static bool IsElementEnabled(this IApp app, String automationId)
         {
             if (app.CheckForElement(automationId))
