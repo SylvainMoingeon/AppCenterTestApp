@@ -10,7 +10,7 @@ namespace AppCenterTestApp.UITest.Pages
 {
     public class MainPage : BasePage
     {
-        const string MainPageName = "Main page";
+        const string MainPageName = "Main Page";
 
         const string MainPageAutomationId = "MainPage";
         const string PlusButtonAutomationId = "PlusButton";
@@ -20,6 +20,8 @@ namespace AppCenterTestApp.UITest.Pages
         public bool PlusButtonEnabled => _app.IsElementEnabled(PlusButtonAutomationId);
         public bool PlusButtonDisplayed => _app.CheckForElement(PlusButtonAutomationId);
 
+        public string IntegerEntryValue => _app.Query(IntegerEntryAutomationId).Single().Text;
+
         public MainPage(IApp app) : base(app, MainPageName, MainPageAutomationId)
         {
 
@@ -28,14 +30,14 @@ namespace AppCenterTestApp.UITest.Pages
         public void FillNumber(int number)
         {
             _app.EnterText(IntegerEntryAutomationId, number.ToString());
-            _app.Screenshot($"Integer field filled with {number}");
+            _app.Screenshot($"Filled IntegerEntry field with {number}");
         }
-        
-        
+
+
         public void ClearNumber()
         {
             _app.ClearText(IntegerEntryAutomationId);
-            _app.Screenshot("Integer field cleared");
+            _app.Screenshot("Cleared IntegerEntry field");
         }
 
         public void TapPlusButton(int numberOfTaps)
@@ -49,9 +51,16 @@ namespace AppCenterTestApp.UITest.Pages
         public void TapPlusButton()
         {
             _app.Tap(PlusButtonAutomationId);
-            _app.Screenshot("Plus button has just been tapped");
+            _app.Screenshot("Tapped Plus button");
         }
 
+        public SecondPage TapNextPageButton()
+        {
+            _app.Tap(NextPageButtonAutomationId);
+            _app.Screenshot("Tapped Next Page button");
+
+            return new SecondPage(_app);
+        }
 
     }
 }

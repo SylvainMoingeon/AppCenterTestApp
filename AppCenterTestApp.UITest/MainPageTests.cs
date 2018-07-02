@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using AppCenterTestApp.UITest.Pages;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
@@ -8,22 +9,14 @@ using Xamarin.UITest.Queries;
 namespace AppCenterTestApp.UITest
 {
     //[TestFixture(Platform.iOS)]
-    //[TestFixture(Platform.Android)]
+    [TestFixture(Platform.Android)]
     public class MainPageTests
     {
         IApp app;
         Platform platform;
 
-        // MainPage
-        static readonly Func<AppQuery, AppQuery> plusButton = q => q.Button("PlusButton");
-        static readonly Func<AppQuery, AppQuery> nextButton = q => q.Button("NextPageButton");
-        static readonly Func<AppQuery, AppQuery> integerEntry = q => q.Marked("IntegerEntry");
-
-        // Login Page
-        static readonly Func<AppQuery, AppQuery> LoginPage = q => q.Marked("LoginPage");
-        static readonly Func<AppQuery, AppQuery> loginButton = q => q.Button("LoginButton");
-        static readonly Func<AppQuery, AppQuery> UserIdEntry = q => q.Marked("UserIdEntry");
-        static readonly Func<AppQuery, AppQuery> UserPasswordEntry = q => q.Marked("UserPasswordEntry");
+        // SUT
+        MainPage _mainPage;
 
         const String category_initialConditionCategory = "InitialCondition";
         const String category_navigationCategory = "Navigation";
@@ -38,6 +31,8 @@ namespace AppCenterTestApp.UITest
         public void BeforeEachTest()
         {
             app = AppInitializer.StartApp(platform);
+
+            _mainPage = new LoginPage(app).Login("admin","admin");
         }
 
 
@@ -48,32 +43,18 @@ namespace AppCenterTestApp.UITest
         //    app.Repl();
         //}
 
-        private void Login()
-        {
-            app.WaitForElement("LoginPage", "La page de login ne s'affiche pas");
-            app.EnterText(UserIdEntry, "admin");
-            app.EnterText(UserPasswordEntry, "admin");
-
-            app.Screenshot("Login button should be enabled");
-            app.Tap(loginButton);
-
-            app.WaitForElement("MainPage", "Navigation from login page to mainpage didn't work.");
-            app.Screenshot("Navigate to main page");
-        }
-
         #region Navigation
         [Test]
         [Category(category_navigationCategory)]
         public void Navigation_NextButtonTap_ShouldNavigateToSecondPage()
         {
             // Arrange
-            Login();
 
             // Act
-            app.Tap(nextButton);
+            var secondPage = _mainPage.TapNextPageButton();
 
             // Assert
-            app.WaitForElement("SecondPage", "La page suivante ne peux pas être atteinte.");
+            Assert.IsTrue(secondPage.IsPageDisplayed);
             app.Screenshot("Navigate to second page");
         }
         #endregion
@@ -84,14 +65,12 @@ namespace AppCenterTestApp.UITest
         public void AtLaunch_IntegerEntryShouldDisplayZero()
         {
             // Arrange
-            Login();
 
             // Act
 
             // Assert
-            var appResult = app.Query(integerEntry).Single();
+            Assert.AreEqual("0", _mainPage.IntegerEntryValue);
             app.Screenshot("Value is zero at launch");
-            Assert.AreEqual("0", appResult.Text);
         }
 
         [Test]
@@ -99,39 +78,29 @@ namespace AppCenterTestApp.UITest
         public void AtLaunch_PlusButtonShouldBeEnabled()
         {
             // Arrange
-            Login();
 
             // Act
 
             // Assert
-            var appResult = app.Query(plusButton).Single();
-            app.Screenshot("PlusButton enabled at launch");
-            Assert.IsTrue(appResult.Enabled, "Le bouton 'Plus' devrait être activé à l'ouverture de la fenêtre.");
+            Assert.IsTrue(_mainPage.PlusButtonEnabled, "Plus button should be enabled at launch.");
         }
 
         [Test]
-        [TestCase("10", 0)]
-        [TestCase("9", 1)]
-        [TestCase("5", 5)]
-        [TestCase("9", 5)]
+        [TestCase(10, 0)]
+        [TestCase(9, 1)]
+        [TestCase(5, 5)]
+        [TestCase(9, 5)]
         [Category(category_businessLogicCategory)]
-        public void IfEntryIntegerValueEqualOrGreaterThanTen_PlusButtonShouldBeDisable(string startingValue, int numberOfTap)
+        public void IfEntryIntegerValueEqualOrGreaterThanTen_PlusButtonShouldBeDisable(int startingValue, int numberOfTaps)
         {
-            // Arrange
-            Login();
-
-            app.EnterText(integerEntry, startingValue);
+            // Arrange    
+            _mainPage.FillNumber(startingValue);
 
             // Act
-            for (int i = 0; i < numberOfTap; i++)
-            {
-                app.Tap(plusButton);
-            }
+            _mainPage.TapPlusButton(numberOfTaps);
 
             // Assert
-            var appResult = app.Query(plusButton).Single();
-            app.Screenshot("PlusButton disabled at 10");
-            Assert.IsTrue(!appResult.Enabled, "Le bouton plus devrait être désactivé si la valeur est supérieure ou égale à 10");
+            Assert.IsFalse(_mainPage.PlusButtonEnabled, "Plus button should be disabled");
 
         }
 
@@ -143,20 +112,13 @@ namespace AppCenterTestApp.UITest
         public void StartingFromZero_TapPlusButtonXTimes_IntegerEntryDisplaysX(int numberOfTaps, String entryTextResult)
         {
             // Arrange
-            Login();
 
             // Act
-            for (int i = 0; i < numberOfTaps; i++)
-            {
-                app.Tap(plusButton);
-                app.Screenshot("Tap PlusButton");
-            }
+            _mainPage.TapPlusButton(numberOfTaps);
 
-            // Assert
-            var appResult = app.Query(integerEntry).Single();
-
-            app.Screenshot($"Le champs de saisie affiche {entryTextResult}");
-            Assert.AreEqual(entryTextResult, appResult.Text);
+            // Assert            
+            Assert.AreEqual(entryTextResult, _mainPage.IntegerEntryValue);
+            app.Screenshot($"IntegerEntry value is {entryTextResult}");
         }
 
 

@@ -15,6 +15,8 @@ namespace AppCenterTestApp.UITest
         IApp app;
         Platform platform;
 
+        LoginPage _loginPage;
+
 
         const String category_initialCondition = "InitialCondition";
         const String category_navigation = "Navigation";
@@ -29,6 +31,8 @@ namespace AppCenterTestApp.UITest
         public void BeforeEachTest()
         {
             app = AppInitializer.StartApp(platform);
+
+            _loginPage = new LoginPage(app);
         }
 
 
@@ -45,13 +49,11 @@ namespace AppCenterTestApp.UITest
         public void AtLAunch_LoginPageShouldLoad()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
-
+            
             // Act
 
             // Assert
-            Assert.IsTrue(loginPage.IsPageDisplayed, "Login page is not displayed at launch");
-
+            Assert.IsTrue(_loginPage.IsPageDisplayed, "Login page is not displayed at launch");
         }
 
         [Test]
@@ -59,12 +61,11 @@ namespace AppCenterTestApp.UITest
         public void AtLaunch_LoginButtonShouldBeDisabled()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
 
             // Act
 
             // Assert
-            Assert.IsFalse(loginPage.LoginButtonEnabled, "At launch login button should be disabled");
+            Assert.IsFalse(_loginPage.LoginButtonEnabled, "At launch login button should be disabled");
 
         }
         #endregion
@@ -75,14 +76,13 @@ namespace AppCenterTestApp.UITest
         public void Validation_BadCredentials_ShouldDisplayErrorMessage()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
 
             // Act
-            loginPage.Login("admin", "badpassword");
+            _loginPage.Login("admin", "badpassword");
 
 
             // Assert
-            Assert.IsTrue(loginPage.ErrorMessageDisplayed, "Error message isn't displayed.");
+            Assert.IsTrue(_loginPage.ErrorMessageDisplayed, "Error message isn't displayed.");
 
         }
 
@@ -91,15 +91,13 @@ namespace AppCenterTestApp.UITest
         public void Validation_IfUserIdIsEmpty_LoginButtonShouldBeDisable()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
-
 
             // Act
-            loginPage.ClearUserName();
-            loginPage.FillPassword("password");
+            _loginPage.ClearUserName();
+            _loginPage.FillPassword("password");
 
             // Assert
-            Assert.IsFalse(loginPage.LoginButtonEnabled, "If Username is empty login button should be disabled");
+            Assert.IsFalse(_loginPage.LoginButtonEnabled, "If Username is empty login button should be disabled");
         }
 
         [Test]
@@ -107,15 +105,13 @@ namespace AppCenterTestApp.UITest
         public void Validation_IfUserPasswordIsEmpty_LoginButtonShouldBeDisable()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
-
 
             // Act
-            loginPage.FillUserName("admin");
-            loginPage.ClearPassword();
-
+            _loginPage.FillUserName("admin");
+            _loginPage.ClearPassword();
+            
             // Assert
-            Assert.IsFalse(loginPage.LoginButtonEnabled, "If password is empty login button should be disabled");
+            Assert.IsFalse(_loginPage.LoginButtonEnabled, "If password is empty login button should be disabled");
         }
         #endregion
 
@@ -125,22 +121,13 @@ namespace AppCenterTestApp.UITest
         public void Navigation_AtLoginSuccess_ShouldNavigateToMainPage()
         {
             // Arrange
-            var loginPage = new LoginPage(app);
 
             // Act
-            var mainPage = loginPage.Login("admin", "admin");
+            var mainPage = _loginPage.Login("admin", "admin");
 
             // Assert
             Assert.IsTrue(mainPage.IsPageDisplayed, "The main page should display");
-
         }
         #endregion
-
-
-
-
-
-
-
     }
 }

@@ -11,7 +11,7 @@ namespace AppCenterTestApp.UITest.Pages
 {
     public class LoginPage : BasePage
     {
-        const string LoginPageName = "LoginPage";
+        const string LoginPageName = "Login Page";
 
         const string LoginPageAutomationId = "LoginPage";
         const string LoginButtonAutomationId = "LoginButton";
