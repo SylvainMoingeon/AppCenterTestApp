@@ -15,7 +15,8 @@ namespace AppCenterTestApp.UITest
                     .Android
                     .EnableLocalScreenshots()
                     //.ApkFile(@"C:\Users\Sylvain\AppData\Local\Xamarin\Mono for Android\Archives\fr.sylvainmoingeon.appcentertestapp.apk")
-                    .InstalledApp("fr.sylvainmoingeon.appcentertestapp")
+                    .InstalledApp("fr.sylvainmoingeon.appcentertestapp")      
+                    .DeviceSerial("emulator-5554")
                     .WaitTimes(new WaitTimes())
                     .StartApp();
 			}
